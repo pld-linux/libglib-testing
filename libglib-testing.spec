@@ -5,20 +5,20 @@
 Summary:	Test harnesses and mock classes for GLib
 Summary(pl.UTF-8):	Osprzęt testowy i klasy atrap dla GLiba
 Name:		libglib-testing
-Version:	0.1.0
+Version:	0.1.1
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 #Source0Download: https://gitlab.gnome.org/pwithnall/libglib-testing/-/tags
 Source0:	https://gitlab.gnome.org/pwithnall/libglib-testing/-/archive/%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	90fd671fc676464c5e67d31a41d70b26
+# Source0-md5:	99a196d66a49619dd698d49a304c1ba6
 URL:		https://gitlab.gnome.org/pwithnall/libglib-testing
 BuildRequires:	glib2-devel >= 1:2.44
 BuildRequires:	gtk-doc
 BuildRequires:	meson >= 0.45.0
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
-BuildRequires:	rpmbuild(macros) >= 1.736
+BuildRequires:	rpmbuild(macros) >= 2.042
 Requires:	glib2 >= 1:2.44
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -75,15 +75,15 @@ Dokumentacja API biblioteki glib-testing.
 %setup -q
 
 %build
-%meson build \
+%meson \
 	%{!?with_static_libs:--default-library=shared}
 
-%ninja_build -C build
+%meson_build -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%ninja_install -C build
+%meson_install -C build
 
 %clean
 rm -rf $RPM_BUILD_ROOT
