@@ -1,19 +1,21 @@
 #
 # Conditional build:
 %bcond_without	static_libs	# static library
+%bcond_without	tests		# unit tests
 #
 Summary:	Test harnesses and mock classes for GLib
 Summary(pl.UTF-8):	Osprzęt testowy i klasy atrap dla GLiba
 Name:		libglib-testing
-Version:	0.1.1
+Version:	0.2.0
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 #Source0Download: https://gitlab.gnome.org/pwithnall/libglib-testing/-/tags
 Source0:	https://gitlab.gnome.org/pwithnall/libglib-testing/-/archive/%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	99a196d66a49619dd698d49a304c1ba6
+# Source0-md5:	c2e1304c950048e49368da3ba5477ed6
 URL:		https://gitlab.gnome.org/pwithnall/libglib-testing
-BuildRequires:	glib2-devel >= 1:2.44
+# dbus-queue.c uses g_autofd (glib 2.76); meson.build still declares 2.44
+BuildRequires:	glib2-devel >= 1:2.76
 BuildRequires:	gtk-doc
 BuildRequires:	meson >= 0.45.0
 BuildRequires:	ninja >= 1.5
@@ -79,6 +81,10 @@ Dokumentacja API biblioteki glib-testing.
 	%{!?with_static_libs:--default-library=shared}
 
 %meson_build -C build
+
+%if %{with tests}
+%meson_test -C build
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
